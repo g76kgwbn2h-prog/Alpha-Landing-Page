@@ -48,7 +48,7 @@ window.EVENT_CONFIG = {
     "Alpha kicks off with our Launch Night.\n\nA fun, relaxed, informative evening to check out what Alpha is. Then if you like it simply come back the following Wednesday to continue the seven week Alpha journey of new friendships, fun, meaningful conversation and exploring the big questions of faith. We'd love you to join us!",
   trySection: {
     enabled: true,
-    overlayText: "ALPHA IS FOR EVERYONE, EVERYWHERE",
+    overlayText: "",
     heading: "Try Alpha",
     intro:
       "It's a space to explore life, meaning and the Christian faith. A place where you can ask any question, no matter your age, background or beliefs.",

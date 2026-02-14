@@ -174,6 +174,11 @@
       ".sp-brand img{height:38px;width:auto;display:block;filter:brightness(1.05);}",
       ".sp-brand span{display:inline;}",
       ".sp-nav{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-end;}",
+      ".sp-burger{display:none;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--sp-border);background:transparent;color:var(--sp-text);font:700 20px/1 Arial,sans-serif;cursor:pointer;}",
+      ".sp-mobile-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9997;}",
+      ".sp-mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--sp-surface);border-bottom:1px solid var(--sp-border);padding:8px 14px 14px;z-index:9998;}",
+      ".sp-mobile-link{display:block;padding:12px 6px;border-bottom:1px solid var(--sp-border);color:var(--sp-text)!important;text-decoration:none!important;font:700 12px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}",
+      ".sp-mobile-link:last-child{border-bottom:0;}",
       ".sp-nav-link{color:var(--sp-text)!important;text-decoration:none!important;font:600 12px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid transparent;}",
       ".sp-nav-link:hover{background:var(--sp-accent);border-color:var(--sp-accent);color:#120c08!important;}",
       "#SITE_HEADER-placeholder{display:none!important;height:0!important;min-height:0!important;}",
@@ -201,7 +206,7 @@
       "#comp-m7xb380k a,#comp-m7xce3ra a{background:var(--sp-accent)!important;border-color:var(--sp-accent)!important;color:#1a110a!important;}",
       "#comp-m7xb380k a:hover,#comp-m7xce3ra a:hover{background:var(--sp-accent-hover)!important;border-color:var(--sp-accent-hover)!important;}",
       "#comp-mclebto0{display:none!important;}",
-      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:flex-start}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-nav{display:none!important}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}}",
+      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:space-between}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-nav{display:none!important}.sp-burger{display:inline-flex}.sp-mobile-menu{display:block}.sp-mobile-backdrop{display:block;opacity:0;pointer-events:none;transition:opacity .2s}.sp-header.is-open .sp-mobile-backdrop{opacity:1;pointer-events:auto}.sp-header:not(.is-open) .sp-mobile-menu{display:none}.sp-header.is-open .sp-mobile-menu{display:block}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}}",
     ].join("");
 
     var style = document.getElementById("sp-theme-style");
@@ -246,13 +251,16 @@
     var section = document.createElement("section");
     section.id = "sp-try-section";
     section.className = "sp-try-section";
+    var overlayMarkup = trySection.overlayText
+      ? '<div class="sp-try-overlay">' + escapeHtml(trySection.overlayText) + "</div>"
+      : "";
+
     section.innerHTML =
       '<div class="sp-try-inner">' +
       '<div class="sp-try-media">' +
       mediaMarkup +
-      '<div class="sp-try-overlay">' +
-      escapeHtml(trySection.overlayText || "") +
-      "</div></div>" +
+      overlayMarkup +
+      "</div>" +
       '<div class="sp-try-copy">' +
       '<h3 class="sp-try-heading">' +
       escapeHtml(trySection.heading || "Try Alpha") +
@@ -294,9 +302,14 @@
         "<span>" +
         escapeHtml(config.churchName) +
         "</span></a>" +
+        '<button class="sp-burger" type="button" aria-label="Open menu" aria-expanded="false">&#9776;</button>' +
         '<nav class="sp-nav">' +
         renderLinks(headerLinks, "sp-nav-link") +
-        "</nav></div></div>";
+        "</nav></div>" +
+        '<div class="sp-mobile-backdrop" aria-hidden="true"></div>' +
+        '<nav class="sp-mobile-menu" aria-label="Mobile menu">' +
+        renderLinks(headerLinks, "sp-mobile-link") +
+        "</nav></div>";
     }
 
     var footer = document.getElementById("comp-m7x93b201");
@@ -329,6 +342,44 @@
         escapeHtml(config.churchName) +
         ". All rights reserved.</div></footer>";
     }
+  }
+
+  function setupMobileMenu() {
+    var container = document.getElementById("comp-m7x93b2112");
+    if (!container) {
+      return;
+    }
+    var header = container.querySelector(".sp-header");
+    var burger = container.querySelector(".sp-burger");
+    var backdrop = container.querySelector(".sp-mobile-backdrop");
+    var menuLinks = container.querySelectorAll(".sp-mobile-menu a");
+    if (!header || !burger) {
+      return;
+    }
+
+    function closeMenu() {
+      header.classList.remove("is-open");
+      burger.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleMenu() {
+      var open = !header.classList.contains("is-open");
+      header.classList.toggle("is-open", open);
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    burger.onclick = toggleMenu;
+    if (backdrop) {
+      backdrop.onclick = closeMenu;
+    }
+    menuLinks.forEach(function (link) {
+      link.addEventListener("click", closeMenu);
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+    });
   }
 
   function applyEventConfig() {
@@ -439,6 +490,7 @@
     applyBrandTheme(config);
     renderTrySection(config);
     replaceHeaderFooter(config);
+    setupMobileMenu();
     updateButtons(config);
     updateFooterIdentity(config);
     updateImages(config);
