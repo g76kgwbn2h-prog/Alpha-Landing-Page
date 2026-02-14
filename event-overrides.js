@@ -43,6 +43,8 @@
       }
       link.href = config.buttonUrl;
       link.setAttribute("aria-label", config.buttonLabel);
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noopener noreferrer");
       var label = link.querySelector(".wixui-button__label, .w4Vxx6, .gIbEBg");
       if (label) {
         label.textContent = config.buttonLabel;
@@ -113,6 +115,116 @@
       "Alpha step 4"
     );
     updateImageSlot("#img_comp-m7xc4yop", config.images.bottomBanner, "Alpha banner");
+  }
+
+  function renderLinks(links, className) {
+    return (links || [])
+      .map(function (link) {
+        return (
+          '<a class="' +
+          className +
+          '" href="' +
+          escapeHtml(link.url) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          escapeHtml(link.label) +
+          "</a>"
+        );
+      })
+      .join("");
+  }
+
+  function applyBrandTheme(config) {
+    var theme = config.theme || {};
+    var css = [
+      ":root{",
+      "--sp-surface:" + (theme.surface || "#161311") + ";",
+      "--sp-surface-soft:" + (theme.surfaceSoft || "#231d19") + ";",
+      "--sp-text:" + (theme.text || "#f7efe8") + ";",
+      "--sp-muted:" + (theme.muted || "#d8c5b3") + ";",
+      "--sp-accent:" + (theme.accent || "#e26f3f") + ";",
+      "--sp-accent-hover:" + (theme.accentHover || "#f08b5e") + ";",
+      "--sp-border:" + (theme.border || "#3a2b20") + ";",
+      "}",
+      ".sp-header{position:sticky;top:0;z-index:9999;background:rgba(22,19,17,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--sp-border);}",
+      ".sp-header-inner{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px;}",
+      ".sp-brand{display:flex;align-items:center;gap:12px;color:var(--sp-text)!important;text-decoration:none!important;font:600 14px/1.2 Arial,sans-serif;letter-spacing:.03em;text-transform:uppercase;}",
+      ".sp-brand img{height:38px;width:auto;display:block;filter:brightness(1.05);}",
+      ".sp-nav{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-end;}",
+      ".sp-nav-link{color:var(--sp-text)!important;text-decoration:none!important;font:600 12px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid transparent;}",
+      ".sp-nav-link:hover{background:var(--sp-accent);border-color:var(--sp-accent);color:#120c08!important;}",
+      ".sp-footer{background:var(--sp-surface);color:var(--sp-text);padding:42px 20px 28px;border-top:1px solid var(--sp-border);}",
+      ".sp-footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 2fr;gap:26px;}",
+      ".sp-footer h4{margin:0 0 10px;font:700 14px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-muted);}",
+      ".sp-footer p,.sp-footer a{font:400 14px/1.5 Arial,sans-serif;color:var(--sp-text);text-decoration:none;}",
+      ".sp-footer-links{display:grid;grid-template-columns:repeat(2,minmax(140px,1fr));gap:8px 16px;}",
+      ".sp-footer-link:hover,.sp-social-link:hover{color:var(--sp-accent);}",
+      ".sp-social{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}",
+      ".sp-bottom{max-width:1200px;margin:20px auto 0;padding-top:12px;border-top:1px solid var(--sp-border);font:400 12px/1.4 Arial,sans-serif;color:var(--sp-muted);}",
+      "#comp-m7xb380k a,#comp-m7xce3ra a{background:var(--sp-accent)!important;border-color:var(--sp-accent)!important;color:#1a110a!important;}",
+      "#comp-m7xb380k a:hover,#comp-m7xce3ra a:hover{background:var(--sp-accent-hover)!important;border-color:var(--sp-accent-hover)!important;}",
+      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-nav{justify-content:flex-start}.sp-nav-link{font-size:11px}}",
+    ].join("");
+
+    var style = document.getElementById("sp-theme-style");
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "sp-theme-style";
+      document.head.appendChild(style);
+    }
+    style.textContent = css;
+  }
+
+  function replaceHeaderFooter(config) {
+    var header = document.getElementById("comp-m7x93b2112");
+    if (header) {
+      header.innerHTML =
+        '<div class="sp-header"><div class="sp-header-inner">' +
+        '<a class="sp-brand" href="' +
+        escapeHtml(config.churchWebsite) +
+        '" target="_blank" rel="noopener noreferrer">' +
+        '<img src="' +
+        escapeHtml(config.logoUrl) +
+        '" alt="' +
+        escapeHtml(config.churchName) +
+        ' logo">' +
+        "<span>" +
+        escapeHtml(config.churchName) +
+        "</span></a>" +
+        '<nav class="sp-nav">' +
+        renderLinks(config.headerNav, "sp-nav-link") +
+        "</nav></div></div>";
+    }
+
+    var footer = document.getElementById("comp-m7x93b201");
+    if (footer) {
+      footer.innerHTML =
+        '<footer class="sp-footer"><div class="sp-footer-inner">' +
+        "<div>" +
+        "<h4>St Philip's Anglican Cottesloe</h4>" +
+        "<p>" +
+        escapeHtml(config.churchAddress) +
+        "</p>" +
+        '<p><a href="tel:+61893851042">' +
+        escapeHtml(config.churchPhone) +
+        "</a></p>" +
+        '<p><a href="mailto:' +
+        escapeHtml(config.churchEmail) +
+        '">' +
+        escapeHtml(config.churchEmail) +
+        "</a></p>" +
+        '<div class="sp-social">' +
+        renderLinks(config.socialLinks, "sp-social-link") +
+        "</div>" +
+        "</div>" +
+        '<div><h4>Quick Links</h4><div class="sp-footer-links">' +
+        renderLinks(config.footerLinks, "sp-footer-link") +
+        "</div></div>" +
+        '</div><div class="sp-bottom">&copy; ' +
+        new Date().getFullYear() +
+        " " +
+        escapeHtml(config.churchName) +
+        ". All rights reserved.</div></footer>";
+    }
   }
 
   function applyEventConfig() {
@@ -218,6 +330,8 @@
       '<h3 class="font_3 wixui-rich-text__text">' + escapeHtml(config.footerHero) + "</h3>"
     );
 
+    applyBrandTheme(config);
+    replaceHeaderFooter(config);
     updateButtons(config);
     updateFooterIdentity(config);
     updateImages(config);

@@ -2,6 +2,11 @@
 window.EVENT_CONFIG = {
   churchName: "St Philip's Anglican Cottesloe",
   churchAddress: "240 Marmion St Cottesloe WA 6011",
+  churchPhone: "+61 8 9385 1042",
+  churchEmail: "office@stphilips.net.au",
+  churchWebsite: "https://stphilips.net.au",
+  logoUrl:
+    "https://images.squarespace-cdn.com/content/v1/5ddf4aa18adffd3a0d280e98/1576720612900-2YVHM18SCNWJLHQEPVI7/ReverseWeb.png",
   heroTag: "ALPHA",
   heroInvite: "You're invited to Alpha.",
   heroSubheading: "FIND COMMUNITY & EXPLORE LIFE'S BIG QUESTIONS TOGETHER.",
@@ -43,6 +48,44 @@ window.EVENT_CONFIG = {
   eventLocation: "Cottesloe Tennis Club (17 Napier St, Cottesloe WA 6011)",
   footerHero:
     "Meet new people, eat some great food, hear a live talk, and see if Alpha is for you.",
+  headerNav: [
+    { label: "ALPHA", url: "https://stphilips.net.au/alpha" },
+    { label: "SUNDAY", url: "https://stphilips.net.au/sunday" },
+    { label: "KIDS", url: "https://stphilips.net.au/kids-1" },
+    { label: "YOUTH", url: "https://stphilips.net.au/youth" },
+    { label: "SERMONS", url: "https://stphilips.net.au/sermons" },
+    { label: "GIVE", url: "https://stphilips.net.au/giving" },
+    { label: "CONTACT", url: "https://stphilips.net.au/get-in-touch" },
+  ],
+  footerLinks: [
+    { label: "Sunday", url: "https://stphilips.net.au/sunday" },
+    { label: "Kids", url: "https://stphilips.net.au/kids-1" },
+    { label: "Youth", url: "https://stphilips.net.au/youth" },
+    { label: "Church Planting", url: "https://stphilips.net.au/church-planting-1" },
+    { label: "Sermons", url: "https://stphilips.net.au/sermons" },
+    { label: "People", url: "https://stphilips.net.au/people" },
+    { label: "Our Vision", url: "https://stphilips.net.au/vision" },
+    { label: "Child Safety", url: "https://stphilips.net.au/child-safety" },
+    { label: "Giving", url: "https://stphilips.net.au/giving" },
+    { label: "Contact", url: "https://stphilips.net.au/get-in-touch" },
+  ],
+  socialLinks: [
+    { label: "Facebook", url: "https://www.facebook.com/StPips/" },
+    { label: "YouTube", url: "http://youtube.com/channel/UCMT0D8N39PScWoFSpMSQZ9w" },
+    {
+      label: "Apple Podcasts",
+      url: "https://podcasts.apple.com/au/podcast/st-philips-anglican-church-cottesloe/id1502945251",
+    },
+  ],
+  theme: {
+    surface: "#161311",
+    surfaceSoft: "#231d19",
+    text: "#f7efe8",
+    muted: "#d8c5b3",
+    accent: "#e26f3f",
+    accentHover: "#f08b5e",
+    border: "#3a2b20",
+  },
   images: {
     heroBackground: "./assets/alpha-1.jpg",
     introImage1: "./assets/alpha-9.jpg",
