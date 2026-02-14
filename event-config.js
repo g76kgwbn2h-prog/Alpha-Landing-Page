@@ -42,5 +42,5 @@ window.EVENT_CONFIG = {
   footerHero:
     "Meet new people, eat some great food, hear a live talk, and see if Alpha is for you.",
   buttonLabel: "RSVP HERE",
-  buttonUrl: "https://neighbourhood.churchcenter.com/people/forms/997869",
+  buttonUrl: "https://stphilipsanglican.churchsuite.com/-/forms/xkbydkaa",
 };
