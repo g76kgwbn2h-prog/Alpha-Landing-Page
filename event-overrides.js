@@ -49,6 +49,11 @@
       if (label) {
         label.textContent = config.buttonLabel;
       }
+      link.onclick = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        window.open(config.buttonUrl, "_blank", "noopener,noreferrer");
+      };
     });
   }
 
@@ -57,29 +62,43 @@
       node.remove();
     });
 
-    var detailsText =
-      escapeHtml(config.eventDateTime || "") +
-      "<br>" +
-      escapeHtml(config.eventLocation || "");
+    var rawLocation = String(config.eventLocation || "").trim();
+    var locationMatch = rawLocation.match(/^(.*?)\s*\((.*?)\)\s*$/);
+    var venue = locationMatch ? locationMatch[1].trim() : rawLocation;
+    var address = locationMatch ? locationMatch[2].trim() : "";
+    var dateLine = escapeHtml(config.eventDateTime || "");
+
+    var lightDetails =
+      '<div class="sp-rsvp-details sp-rsvp-details--light" data-rsvp-slot="primary">' +
+      '<span class="sp-rsvp-line sp-rsvp-date">' +
+      dateLine +
+      "</span>" +
+      '<span class="sp-rsvp-line sp-rsvp-venue">' +
+      escapeHtml(rawLocation) +
+      "</span>" +
+      "</div>";
+
+    var darkDetails =
+      '<div class="sp-rsvp-details sp-rsvp-details--dark" data-rsvp-slot="try">' +
+      '<span class="sp-rsvp-line sp-rsvp-date">' +
+      dateLine +
+      "</span>" +
+      '<span class="sp-rsvp-line sp-rsvp-venue">' +
+      escapeHtml(venue) +
+      "</span>" +
+      (address
+        ? '<span class="sp-rsvp-line sp-rsvp-address">' + escapeHtml(address) + "</span>"
+        : "") +
+      "</div>";
 
     var firstButtonWrap = document.querySelector("#comp-m7xb380k");
     if (firstButtonWrap) {
-      firstButtonWrap.insertAdjacentHTML(
-        "beforeend",
-        '<div class="sp-rsvp-details sp-rsvp-details--light" data-rsvp-slot="primary">' +
-          detailsText +
-          "</div>"
-      );
+      firstButtonWrap.insertAdjacentHTML("beforeend", lightDetails);
     }
 
     var tryButton = document.querySelector("#sp-try-section .sp-try-link");
     if (tryButton) {
-      tryButton.insertAdjacentHTML(
-        "afterend",
-        '<div class="sp-rsvp-details sp-rsvp-details--dark" data-rsvp-slot="try">' +
-          detailsText +
-          "</div>"
-      );
+      tryButton.insertAdjacentHTML("afterend", darkDetails);
     }
   }
 
@@ -105,10 +124,41 @@
     }
   }
 
+  function getImageCandidates(src) {
+    var value = String(src || "").trim();
+    if (!value) {
+      return [];
+    }
+    if (/^(https?:)?\/\//i.test(value) || value.indexOf("data:") === 0) {
+      return [value];
+    }
+    if (value.indexOf("/") === 0) {
+      return [value, "." + value];
+    }
+    if (value.indexOf("./") === 0) {
+      return [value, value.slice(1)];
+    }
+    return ["./" + value, "/" + value.replace(/^\/+/, "")];
+  }
+
   function updateImageSlot(selector, src, alt) {
+    var candidates = getImageCandidates(src);
+    if (!candidates.length) {
+      return;
+    }
+
     var image = document.querySelector(selector + " img");
     if (image) {
-      image.src = src;
+      var index = 0;
+      image.src = candidates[index];
+      image.onerror = function () {
+        index += 1;
+        if (index < candidates.length) {
+          image.src = candidates[index];
+          return;
+        }
+        image.onerror = null;
+      };
       if (alt) {
         image.alt = alt;
       }
@@ -116,7 +166,7 @@
 
     var source = document.querySelector(selector + " source");
     if (source) {
-      source.srcset = src;
+      source.srcset = candidates[0];
     }
   }
 
@@ -230,9 +280,11 @@
       ".sp-try-body{margin:0;font:400 16px/1.65 Arial,sans-serif;color:var(--sp-text);}",
       ".sp-try-link{display:inline-block;position:relative;z-index:4;pointer-events:auto;margin-top:20px;padding:11px 16px;border-radius:999px;background:var(--sp-accent);color:#1a110a!important;font:700 12px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none!important;}",
       ".sp-try-link:hover{background:var(--sp-accent-hover);}",
-      ".sp-rsvp-details{margin-top:12px;font:700 18px/1.45 Arial,sans-serif;letter-spacing:.01em;text-transform:uppercase;text-align:left;}",
-      ".sp-rsvp-details--light{color:#111;}",
-      ".sp-rsvp-details--dark{color:var(--sp-muted);}",
+      ".sp-rsvp-details{margin-top:12px;text-align:left;}",
+      ".sp-rsvp-line{display:block;font:700 14px/1.45 Arial,sans-serif;letter-spacing:.02em;text-transform:uppercase;}",
+      ".sp-rsvp-date{margin-bottom:2px;}",
+      ".sp-rsvp-details--light .sp-rsvp-line{color:#1f1f1f;}",
+      ".sp-rsvp-details--dark .sp-rsvp-line{color:var(--sp-muted);}",
       ".sp-footer{background:var(--sp-surface);color:var(--sp-text);padding:42px 20px 28px;border-top:1px solid var(--sp-border);}",
       ".sp-footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 2fr;gap:26px;}",
       ".sp-footer h4{margin:0 0 10px;font:700 14px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-muted);}",
@@ -434,7 +486,10 @@
     if (!link) {
       return;
     }
-    var href = "https://stphilipsanglican.churchsuite.com/-/forms/xkbydkaa";
+    var href =
+      (config.trySection && config.trySection.buttonUrl) ||
+      config.buttonUrl ||
+      "https://stphilipsanglican.churchsuite.com/-/forms/xkbydkaa";
     link.href = href;
     link.setAttribute("target", "_blank");
     link.setAttribute("rel", "noopener noreferrer");
@@ -457,6 +512,10 @@
     if (!header || !burger) {
       return;
     }
+    if (header.dataset.spMenuBound === "1") {
+      return;
+    }
+    header.dataset.spMenuBound = "1";
 
     function closeMenu() {
       header.classList.remove("is-open");
@@ -476,11 +535,14 @@
     menuLinks.forEach(function (link) {
       link.addEventListener("click", closeMenu);
     });
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeMenu();
-      }
-    });
+    if (!window.__spEscapeBound) {
+      window.__spEscapeBound = true;
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeMenu();
+        }
+      });
+    }
   }
 
   function applyEventConfig() {
@@ -599,9 +661,20 @@
     updateImages(config);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyEventConfig);
-  } else {
+  function boot() {
     applyEventConfig();
+    setTimeout(applyEventConfig, 250);
+    setTimeout(applyEventConfig, 1200);
+    setTimeout(applyEventConfig, 2400);
   }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () {
+    setTimeout(applyEventConfig, 50);
+  });
 })();
