@@ -203,10 +203,15 @@
       ".sp-footer-link:hover,.sp-social-link:hover{color:var(--sp-accent);}",
       ".sp-social{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}",
       ".sp-bottom{max-width:1200px;margin:20px auto 0;padding-top:12px;border-top:1px solid var(--sp-border);font:400 12px/1.4 Arial,sans-serif;color:var(--sp-muted);}",
+      ".sp-bottom-content{display:flex;align-items:center;justify-content:space-between;gap:16px;}",
+      ".sp-sponsor{display:flex;align-items:center;gap:10px;justify-content:flex-end;color:var(--sp-muted);}",
+      ".sp-sponsor-label{font:400 12px/1.2 Arial,sans-serif;letter-spacing:.03em;}",
+      ".sp-sponsor a{display:inline-flex;align-items:center;gap:8px;color:var(--sp-text)!important;text-decoration:none!important;font:600 12px/1.2 Arial,sans-serif;}",
+      ".sp-sponsor img{height:22px;width:auto;display:block;filter:brightness(1.06);border-radius:4px;background:#fff;padding:2px 4px;}",
       "#comp-m7xb380k a,#comp-m7xce3ra a{background:var(--sp-accent)!important;border-color:var(--sp-accent)!important;color:#1a110a!important;}",
       "#comp-m7xb380k a:hover,#comp-m7xce3ra a:hover{background:var(--sp-accent-hover)!important;border-color:var(--sp-accent-hover)!important;}",
       "#comp-mclebto0{display:none!important;}",
-      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:space-between}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-nav{display:none!important}.sp-burger{display:inline-flex}.sp-mobile-menu{display:block}.sp-mobile-backdrop{display:block;opacity:0;pointer-events:none;transition:opacity .2s}.sp-header.is-open .sp-mobile-backdrop{opacity:1;pointer-events:auto}.sp-header:not(.is-open) .sp-mobile-menu{display:none}.sp-header.is-open .sp-mobile-menu{display:block}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}}",
+      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:space-between}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-nav{display:none!important}.sp-burger{display:inline-flex}.sp-mobile-menu{display:block}.sp-mobile-backdrop{display:block;opacity:0;pointer-events:none;transition:opacity .2s}.sp-header.is-open .sp-mobile-backdrop{opacity:1;pointer-events:auto}.sp-header:not(.is-open) .sp-mobile-menu{display:none}.sp-header.is-open .sp-mobile-menu{display:block}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}.sp-bottom-content{flex-direction:column;align-items:flex-start}.sp-sponsor{justify-content:flex-start}}",
     ].join("");
 
     var style = document.getElementById("sp-theme-style");
@@ -275,9 +280,9 @@
       escapeHtml(trySection.body || "") +
       "</p>" +
       '<a class="sp-try-link" href="' +
-      escapeHtml(trySection.buttonUrl || "https://www.alpha.org.au/try") +
+      escapeHtml(trySection.buttonUrl || config.buttonUrl || "https://www.alpha.org.au/try") +
       '" target="_blank" rel="noopener noreferrer">' +
-      escapeHtml(trySection.buttonLabel || "Find an Alpha") +
+      escapeHtml(trySection.buttonLabel || config.buttonLabel || "Find an Alpha") +
       "</a></div></div>";
 
     anchor.parentNode.insertBefore(section, anchor);
@@ -314,6 +319,26 @@
 
     var footer = document.getElementById("comp-m7x93b201");
     if (footer) {
+      var sponsorMarkup = "";
+      if (config.sponsor && config.sponsor.url && config.sponsor.logoUrl) {
+        sponsorMarkup =
+          '<div class="sp-sponsor">' +
+          '<span class="sp-sponsor-label">' +
+          escapeHtml(config.sponsor.label || "Sponsored by") +
+          "</span>" +
+          '<a href="' +
+          escapeHtml(config.sponsor.url) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          '<img src="' +
+          escapeHtml(config.sponsor.logoUrl) +
+          '" alt="' +
+          escapeHtml((config.sponsor.name || "Sponsor") + " logo") +
+          '">' +
+          "<span>" +
+          escapeHtml(config.sponsor.name || "") +
+          "</span></a></div>";
+      }
+
       footer.innerHTML =
         '<footer class="sp-footer"><div class="sp-footer-inner">' +
         "<div>" +
@@ -336,11 +361,13 @@
         '<div><h4>Quick Links</h4><div class="sp-footer-links">' +
         renderLinks(config.footerLinks, "sp-footer-link") +
         "</div></div>" +
-        '</div><div class="sp-bottom">&copy; ' +
+        '</div><div class="sp-bottom"><div class="sp-bottom-content"><span>&copy; ' +
         new Date().getFullYear() +
         " " +
         escapeHtml(config.churchName) +
-        ". All rights reserved.</div></footer>";
+        ". All rights reserved.</span>" +
+        sponsorMarkup +
+        "</div></div></footer>";
     }
   }
 

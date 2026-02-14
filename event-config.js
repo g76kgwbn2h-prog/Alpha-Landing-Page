@@ -60,8 +60,8 @@ window.EVENT_CONFIG = {
       "https://static.wixstatic.com/media/97c1b7_c32d19cae2b543279bc39c4dcaec072af000.jpg/v1/fill/w_768,h_432,al_c,q_85,enc_avif,quality_auto/97c1b7_c32d19cae2b543279bc39c4dcaec072af000.jpg",
     videoEmbedUrl:
       "https://www.youtube.com/embed/DCck-cySK7I?autoplay=1&mute=1&playsinline=1&loop=1&playlist=DCck-cySK7I&controls=0&rel=0&modestbranding=1",
-    buttonLabel: "Find an Alpha",
-    buttonUrl: "https://www.alpha.org.au/try",
+    buttonLabel: "RSVP HERE",
+    buttonUrl: "https://stphilipsanglican.churchsuite.com/-/forms/xkbydkaa",
   },
   eventDateTime: "Wednesday April 22, 7-9pm",
   eventLocation: "Cottesloe Tennis Club (17 Napier St, Cottesloe WA 6011)",
@@ -95,6 +95,12 @@ window.EVENT_CONFIG = {
       url: "https://podcasts.apple.com/au/podcast/st-philips-anglican-church-cottesloe/id1502945251",
     },
   ],
+  sponsor: {
+    label: "Sponsored by",
+    name: "Abel Property",
+    url: "https://www.abelproperty.com.au",
+    logoUrl: "https://logo.clearbit.com/abelproperty.com.au",
+  },
   theme: {
     surface: "#161311",
     surfaceSoft: "#231d19",
