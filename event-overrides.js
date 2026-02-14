@@ -52,6 +52,29 @@
     });
   }
 
+  function updateRsvpDetails(config) {
+    var detailsHtml =
+      '<div class="sp-rsvp-details">' +
+      escapeHtml(config.eventDateTime || "") +
+      "<br>" +
+      escapeHtml(config.eventLocation || "") +
+      "</div>";
+
+    ["#comp-m7xb380k", "#comp-m7xce3ra"].forEach(function (selector) {
+      var buttonWrap = document.querySelector(selector);
+      if (!buttonWrap) {
+        return;
+      }
+
+      var next = buttonWrap.nextElementSibling;
+      if (next && next.classList && next.classList.contains("sp-rsvp-details")) {
+        next.remove();
+      }
+
+      buttonWrap.insertAdjacentHTML("afterend", detailsHtml);
+    });
+  }
+
   function updateFooterIdentity(config) {
     var contactBlock = document.getElementById("comp-m7x93b201_r_comp-m5ot5s24");
     if (contactBlock) {
@@ -199,6 +222,7 @@
       ".sp-try-body{margin:0;font:400 16px/1.65 Arial,sans-serif;color:var(--sp-text);}",
       ".sp-try-link{display:inline-block;position:relative;z-index:4;pointer-events:auto;margin-top:20px;padding:11px 16px;border-radius:999px;background:var(--sp-accent);color:#1a110a!important;font:700 12px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none!important;}",
       ".sp-try-link:hover{background:var(--sp-accent-hover);}",
+      ".sp-rsvp-details{margin-top:10px;color:var(--sp-muted);font:600 13px/1.5 Arial,sans-serif;text-align:center;}",
       ".sp-footer{background:var(--sp-surface);color:var(--sp-text);padding:42px 20px 28px;border-top:1px solid var(--sp-border);}",
       ".sp-footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 2fr;gap:26px;}",
       ".sp-footer h4{margin:0 0 10px;font:700 14px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-muted);}",
@@ -400,15 +424,14 @@
     if (!link) {
       return;
     }
-    var href =
-      (config.trySection && config.trySection.buttonUrl) ||
-      config.buttonUrl ||
-      "https://stphilipsanglican.churchsuite.com/-/forms/xkbydkaa";
+    var href = "https://stphilipsanglican.churchsuite.com/-/forms/xkbydkaa";
     link.href = href;
     link.setAttribute("target", "_blank");
     link.setAttribute("rel", "noopener noreferrer");
     link.onclick = function (event) {
+      event.preventDefault();
       event.stopPropagation();
+      window.open(href, "_blank", "noopener,noreferrer");
     };
   }
 
@@ -561,6 +584,7 @@
     replaceHeaderFooter(config);
     setupMobileMenu();
     updateButtons(config);
+    updateRsvpDetails(config);
     updateFooterIdentity(config);
     updateImages(config);
   }
