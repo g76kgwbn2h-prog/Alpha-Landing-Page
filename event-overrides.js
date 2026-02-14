@@ -207,7 +207,7 @@
       ".sp-sponsor{display:flex;align-items:center;gap:10px;justify-content:flex-end;color:var(--sp-muted);background:rgba(255,255,255,.03);border:1px solid var(--sp-border);border-radius:999px;padding:7px 10px;}",
       ".sp-sponsor-label{font:400 12px/1.2 Arial,sans-serif;letter-spacing:.03em;}",
       ".sp-sponsor a{display:inline-flex;align-items:center;gap:8px;color:var(--sp-text)!important;text-decoration:none!important;font:600 12px/1.2 Arial,sans-serif;}",
-      ".sp-sponsor img{height:22px;width:auto;display:block;filter:brightness(1.06);border-radius:4px;background:#fff;padding:2px 4px;}",
+      ".sp-sponsor img{height:20px;width:20px;display:block;object-fit:contain;border-radius:4px;}",
       "#comp-m7xb380k a,#comp-m7xce3ra a{background:var(--sp-accent)!important;border-color:var(--sp-accent)!important;color:#1a110a!important;}",
       "#comp-m7xb380k a:hover,#comp-m7xce3ra a:hover{background:var(--sp-accent-hover)!important;border-color:var(--sp-accent-hover)!important;}",
       "#comp-mclebto0{display:none!important;}",
@@ -320,7 +320,12 @@
     var footer = document.getElementById("comp-m7x93b201");
     if (footer) {
       var sponsorMarkup = "";
-      if (config.sponsor && config.sponsor.url && config.sponsor.logoUrl) {
+      if (config.sponsor && config.sponsor.url) {
+        var sponsorIcon = config.sponsor.logoUrl
+          ? '<img src="' +
+            escapeHtml(config.sponsor.logoUrl) +
+            '" alt="" aria-hidden="true" onerror="this.style.display=\'none\'">'
+          : "";
         sponsorMarkup =
           '<div class="sp-sponsor">' +
           '<span class="sp-sponsor-label">' +
@@ -329,11 +334,7 @@
           '<a href="' +
           escapeHtml(config.sponsor.url) +
           '" target="_blank" rel="noopener noreferrer">' +
-          '<img src="' +
-          escapeHtml(config.sponsor.logoUrl) +
-          '" alt="' +
-          escapeHtml((config.sponsor.name || "Sponsor") + " logo") +
-          '">' +
+          sponsorIcon +
           "<span>" +
           escapeHtml(config.sponsor.name || "") +
           "</span></a></div>";

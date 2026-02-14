@@ -99,7 +99,7 @@ window.EVENT_CONFIG = {
     label: "Sponsored by",
     name: "Abel Property",
     url: "https://www.abelproperty.com.au",
-    logoUrl: "https://logo.clearbit.com/abelproperty.com.au",
+    logoUrl: "https://www.abelproperty.com.au/favicon.ico",
   },
   theme: {
     surface: "#161311",
