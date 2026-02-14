@@ -72,6 +72,49 @@
     }
   }
 
+  function updateImageSlot(selector, src, alt) {
+    var image = document.querySelector(selector + " img");
+    if (image) {
+      image.src = src;
+      if (alt) {
+        image.alt = alt;
+      }
+    }
+
+    var source = document.querySelector(selector + " source");
+    if (source) {
+      source.srcset = src;
+    }
+  }
+
+  function updateImages(config) {
+    if (!config.images) {
+      return;
+    }
+
+    updateImageSlot("#img_comp-m7x93b1811", config.images.heroBackground, "Alpha hero");
+    updateImageSlot("#img-comp-m7xai1gu6", config.images.introImage1, "Alpha intro 1");
+    updateImageSlot("#img-comp-m7xahkwm", config.images.introImage2, "Alpha intro 2");
+    updateImageSlot("#img-comp-m7xahqd3", config.images.introImage3, "Alpha intro 3");
+    updateImageSlot("#img-comp-m7xbkf0f__item1", config.images.stepImage1, "Alpha step 1");
+    updateImageSlot(
+      "#img-comp-m7xbkf0f__item-j9ples3e",
+      config.images.stepImage2,
+      "Alpha step 2"
+    );
+    updateImageSlot(
+      "#img-comp-m7xbkf0f__item-j9plerjk",
+      config.images.stepImage3,
+      "Alpha step 3"
+    );
+    updateImageSlot(
+      "#img-comp-m7xbkf0f__item-m7xbjbya",
+      config.images.stepImage4,
+      "Alpha step 4"
+    );
+    updateImageSlot("#img_comp-m7xc4yop", config.images.bottomBanner, "Alpha banner");
+  }
+
   function applyEventConfig() {
     var config = window.EVENT_CONFIG;
     if (!config) {
@@ -177,6 +220,7 @@
 
     updateButtons(config);
     updateFooterIdentity(config);
+    updateImages(config);
   }
 
   if (document.readyState === "loading") {

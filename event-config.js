@@ -43,6 +43,17 @@ window.EVENT_CONFIG = {
   eventLocation: "Cottesloe Tennis Club (17 Napier St, Cottesloe WA 6011)",
   footerHero:
     "Meet new people, eat some great food, hear a live talk, and see if Alpha is for you.",
+  images: {
+    heroBackground: "./assets/alpha-1.jpg",
+    introImage1: "./assets/alpha-9.jpg",
+    introImage2: "./assets/alpha-8.jpg",
+    introImage3: "./assets/alpha-4.jpg",
+    stepImage1: "./assets/alpha-2.jpg",
+    stepImage2: "./assets/alpha-6.jpg",
+    stepImage3: "./assets/alpha-7.jpg",
+    stepImage4: "./assets/alpha-5.jpg",
+    bottomBanner: "./assets/alpha-3.jpg",
+  },
   buttonLabel: "RSVP HERE",
   buttonUrl: "https://stphilipsanglican.churchsuite.com/-/forms/xkbydkaa",
 };

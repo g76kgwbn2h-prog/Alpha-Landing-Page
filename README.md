@@ -6,6 +6,7 @@ This project is a static clone of `https://www.neighbourhood.au/alpha` prepared 
 
 1. Open `/Users/kierancarr/Downloads/Alpha Landing Page/event-config.js`.
 2. Update text fields, date/location, and the RSVP link.
+3. Update image paths in `images` to swap page photos.
 3. Save and deploy.
 
 ## Files
