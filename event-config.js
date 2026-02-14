@@ -46,6 +46,23 @@ window.EVENT_CONFIG = {
   ctaSectionHeading: "COME ALONG & SEE WHAT YOU THINK",
   ctaBody:
     "Alpha kicks off with our Launch Night.\n\nA fun, relaxed, informative evening to check out what Alpha is. Then if you like it simply come back the following Wednesday to continue the seven week Alpha journey of new friendships, fun, meaningful conversation and exploring the big questions of faith. We'd love you to join us!",
+  trySection: {
+    enabled: true,
+    overlayText: "ALPHA IS FOR EVERYONE, EVERYWHERE",
+    heading: "Try Alpha",
+    intro:
+      "It's a space to explore life, meaning and the Christian faith. A place where you can ask any question, no matter your age, background or beliefs.",
+    questions:
+      "WHAT'S THE MEANING OF LIFE? WHAT HAPPENS NEXT? WHO IS JESUS? IS GOD EVEN GOOD FOR THE WORLD? FOR ME?",
+    body:
+      "Alpha is a space to ask all these questions and more in an open and non-judgmental space. It's for anyone and everyone who wants to explore life, purpose and faith, ask questions, and share their point of view. Alpha is free and everyone is welcome.",
+    mediaImageUrl:
+      "https://static.wixstatic.com/media/97c1b7_c32d19cae2b543279bc39c4dcaec072af000.jpg/v1/fill/w_768,h_432,al_c,q_85,enc_avif,quality_auto/97c1b7_c32d19cae2b543279bc39c4dcaec072af000.jpg",
+    videoEmbedUrl:
+      "https://www.youtube.com/embed/DCck-cySK7I?autoplay=1&mute=1&playsinline=1&loop=1&playlist=DCck-cySK7I&controls=0&rel=0&modestbranding=1",
+    buttonLabel: "Find an Alpha",
+    buttonUrl: "https://www.alpha.org.au/try",
+  },
   eventDateTime: "Wednesday April 22, 7-9pm",
   eventLocation: "Cottesloe Tennis Club (17 Napier St, Cottesloe WA 6011)",
   footerHero:

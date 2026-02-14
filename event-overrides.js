@@ -179,6 +179,17 @@
       "#SITE_HEADER-placeholder{display:none!important;height:0!important;min-height:0!important;}",
       "#SITE_HEADER,#SITE_HEADER_WRAPPER,#comp-m7x93b2112,#comp-m7x93b2112-pinned-layer{height:auto!important;min-height:0!important;}",
       "#comp-m7x93b2112 .sp-header{position:relative!important;}",
+      ".sp-try-section{background:#111;padding:56px 20px 64px;color:var(--sp-text);}",
+      ".sp-try-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.15fr 1fr;gap:30px;align-items:start;}",
+      ".sp-try-media{position:relative;border-radius:12px;overflow:hidden;background:#000;}",
+      ".sp-try-media img,.sp-try-media iframe{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border:0;}",
+      ".sp-try-overlay{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;pointer-events:none;color:#f72518;font:800 clamp(28px,5vw,72px)/0.95 Arial,sans-serif;letter-spacing:.01em;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.4);}",
+      ".sp-try-heading{margin:0 0 10px;font:700 14px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-muted);}",
+      ".sp-try-intro{margin:0 0 14px;font:400 20px/1.45 Arial,sans-serif;color:var(--sp-text);}",
+      ".sp-try-questions{margin:0 0 14px;font:700 14px/1.6 Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--sp-muted);}",
+      ".sp-try-body{margin:0;font:400 16px/1.65 Arial,sans-serif;color:var(--sp-text);}",
+      ".sp-try-link{display:inline-block;margin-top:20px;padding:11px 16px;border-radius:999px;background:var(--sp-accent);color:#1a110a!important;font:700 12px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none!important;}",
+      ".sp-try-link:hover{background:var(--sp-accent-hover);}",
       ".sp-footer{background:var(--sp-surface);color:var(--sp-text);padding:42px 20px 28px;border-top:1px solid var(--sp-border);}",
       ".sp-footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 2fr;gap:26px;}",
       ".sp-footer h4{margin:0 0 10px;font:700 14px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-muted);}",
@@ -190,7 +201,7 @@
       "#comp-m7xb380k a,#comp-m7xce3ra a{background:var(--sp-accent)!important;border-color:var(--sp-accent)!important;color:#1a110a!important;}",
       "#comp-m7xb380k a:hover,#comp-m7xce3ra a:hover{background:var(--sp-accent-hover)!important;border-color:var(--sp-accent-hover)!important;}",
       "#comp-mclebto0{display:none!important;}",
-      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:flex-start}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-nav{display:none!important}.sp-nav-link{font-size:11px}}",
+      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:flex-start}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-nav{display:none!important}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}}",
     ].join("");
 
     var style = document.getElementById("sp-theme-style");
@@ -200,6 +211,68 @@
       document.head.appendChild(style);
     }
     style.textContent = css;
+  }
+
+  function renderTrySection(config) {
+    var trySection = config.trySection;
+    var existing = document.getElementById("sp-try-section");
+    if (existing) {
+      existing.remove();
+    }
+
+    var anchor = document.getElementById("comp-m7xcak5j");
+    if (!anchor || !trySection || trySection.enabled === false) {
+      return;
+    }
+
+    var legacySection = document.getElementById("comp-mclebto0");
+    if (legacySection) {
+      legacySection.style.display = "none";
+    }
+
+    var mediaMarkup = "";
+    if (trySection.videoEmbedUrl) {
+      mediaMarkup =
+        '<iframe src="' +
+        escapeHtml(trySection.videoEmbedUrl) +
+        '" title="Try Alpha video" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    } else {
+      mediaMarkup =
+        '<img src="' +
+        escapeHtml(trySection.mediaImageUrl || "") +
+        '" alt="Try Alpha">';
+    }
+
+    var section = document.createElement("section");
+    section.id = "sp-try-section";
+    section.className = "sp-try-section";
+    section.innerHTML =
+      '<div class="sp-try-inner">' +
+      '<div class="sp-try-media">' +
+      mediaMarkup +
+      '<div class="sp-try-overlay">' +
+      escapeHtml(trySection.overlayText || "") +
+      "</div></div>" +
+      '<div class="sp-try-copy">' +
+      '<h3 class="sp-try-heading">' +
+      escapeHtml(trySection.heading || "Try Alpha") +
+      "</h3>" +
+      '<p class="sp-try-intro">' +
+      escapeHtml(trySection.intro || "") +
+      "</p>" +
+      '<p class="sp-try-questions">' +
+      escapeHtml(trySection.questions || "") +
+      "</p>" +
+      '<p class="sp-try-body">' +
+      escapeHtml(trySection.body || "") +
+      "</p>" +
+      '<a class="sp-try-link" href="' +
+      escapeHtml(trySection.buttonUrl || "https://www.alpha.org.au/try") +
+      '" target="_blank" rel="noopener noreferrer">' +
+      escapeHtml(trySection.buttonLabel || "Find an Alpha") +
+      "</a></div></div>";
+
+    anchor.parentNode.insertBefore(section, anchor);
   }
 
   function replaceHeaderFooter(config) {
@@ -364,6 +437,7 @@
     );
 
     applyBrandTheme(config);
+    renderTrySection(config);
     replaceHeaderFooter(config);
     updateButtons(config);
     updateFooterIdentity(config);
