@@ -133,6 +133,29 @@
       .join("");
   }
 
+  function applyPageBranding(config) {
+    if (config.pageTitle) {
+      document.title = config.pageTitle;
+    }
+
+    var faviconUrl = config.faviconUrl || config.logoUrl;
+    if (!faviconUrl) {
+      return;
+    }
+
+    var iconSelectors = [
+      'link[rel="icon"]',
+      'link[rel="shortcut icon"]',
+      'link[rel="apple-touch-icon"]',
+    ];
+
+    iconSelectors.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (node) {
+        node.setAttribute("href", faviconUrl);
+      });
+    });
+  }
+
   function applyBrandTheme(config) {
     var theme = config.theme || {};
     var css = [
@@ -232,6 +255,8 @@
     if (!config) {
       return;
     }
+
+    applyPageBranding(config);
 
     setTitleBlock("comp-m7x93b1b8", config.heroTag, "font_3", false);
     setTitleBlock("comp-m7x9xgdb", config.heroInvite, "font_2", true);

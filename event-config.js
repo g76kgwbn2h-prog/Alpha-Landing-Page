@@ -7,6 +7,8 @@ window.EVENT_CONFIG = {
   churchWebsite: "https://stphilips.net.au",
   logoUrl:
     "https://images.squarespace-cdn.com/content/v1/5ddf4aa18adffd3a0d280e98/1576720612900-2YVHM18SCNWJLHQEPVI7/ReverseWeb.png",
+  faviconUrl: "https://stphilips.net.au/favicon.ico",
+  pageTitle: "ALPHA | St Philip's Anglican Cottesloe",
   heroTag: "ALPHA",
   heroInvite: "You're invited to Alpha.",
   heroSubheading: "FIND COMMUNITY & EXPLORE LIFE'S BIG QUESTIONS TOGETHER.",
