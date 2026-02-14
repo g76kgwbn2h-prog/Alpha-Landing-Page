@@ -51,7 +51,6 @@ window.EVENT_CONFIG = {
   footerHero:
     "Meet new people, eat some great food, hear a live talk, and see if Alpha is for you.",
   headerNav: [
-    { label: "ALPHA", url: "https://stphilips.net.au/alpha" },
     { label: "SUNDAY", url: "https://stphilips.net.au/sunday" },
     { label: "KIDS", url: "https://stphilips.net.au/kids-1" },
     { label: "YOUTH", url: "https://stphilips.net.au/youth" },
