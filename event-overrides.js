@@ -50,6 +50,28 @@
     });
   }
 
+  function updateFooterIdentity(config) {
+    var contactBlock = document.getElementById("comp-m7x93b201_r_comp-m5ot5s24");
+    if (contactBlock) {
+      contactBlock.innerHTML =
+        '<p class="font_8 wixui-rich-text__text"><span class="wixui-rich-text__text">' +
+        escapeHtml(config.churchName) +
+        '</span></p><p class="font_8 wixui-rich-text__text"><span class="wixui-rich-text__text">' +
+        escapeHtml(config.churchAddress) +
+        "</span></p>";
+    }
+
+    var copyrightBlock = document.getElementById("comp-m7x93b201_r_comp-m7xgo3hy");
+    if (copyrightBlock) {
+      copyrightBlock.innerHTML =
+        '<p class="font_9 wixui-rich-text__text"><span class="wixui-rich-text__text">&copy; ' +
+        new Date().getFullYear() +
+        " " +
+        escapeHtml(config.churchName).toUpperCase() +
+        "&nbsp;</span></p>";
+    }
+  }
+
   function applyEventConfig() {
     var config = window.EVENT_CONFIG;
     if (!config) {
@@ -154,6 +176,7 @@
     );
 
     updateButtons(config);
+    updateFooterIdentity(config);
   }
 
   if (document.readyState === "loading") {

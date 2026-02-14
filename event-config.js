@@ -1,5 +1,7 @@
 // Edit this file to update event details without touching index.html.
 window.EVENT_CONFIG = {
+  churchName: "St Philip's Anglican Cottesloe",
+  churchAddress: "240 Marmion St Cottesloe WA 6011",
   heroTag: "ALPHA",
   heroInvite: "You're invited to Alpha.",
   heroSubheading: "FIND COMMUNITY & EXPLORE LIFE'S BIG QUESTIONS TOGETHER.",
@@ -37,8 +39,8 @@ window.EVENT_CONFIG = {
   ctaSectionHeading: "COME ALONG & SEE WHAT YOU THINK",
   ctaBody:
     "Alpha kicks off with our Launch Night.\n\nA fun, relaxed, informative evening to check out what Alpha is. Then if you like it simply come back the following Wednesday to continue the seven week Alpha journey of new friendships, fun, meaningful conversation and exploring the big questions of faith. We'd love you to join us!",
-  eventDateTime: "Wednesday 11 February 7pm - 9pm",
-  eventLocation: "Boston Brewery, Victoria Park WA",
+  eventDateTime: "Wednesday April 22, 7-9pm",
+  eventLocation: "Cottesloe Tennis Club (17 Napier St, Cottesloe WA 6011)",
   footerHero:
     "Meet new people, eat some great food, hear a live talk, and see if Alpha is for you.",
   buttonLabel: "RSVP HERE",
