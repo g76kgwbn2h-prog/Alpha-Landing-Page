@@ -122,11 +122,7 @@ window.EVENT_CONFIG = {
     introImage1: "/assets/alpha-9.jpg",
     introImage2: "/assets/alpha-8.jpg",
     introImage3: "/assets/alpha-4.jpg",
-    stepImage1: [
-      "/assets/alpha-step-1.jpg",
-      "/assets/new-1.png",
-      "https://static.wixstatic.com/media/16f6d9_4f5c0abbd5344817abb208f9cd78b56d~mv2.jpg",
-    ],
+    stepImage1: "/assets/alpha-7.jpg",
     stepImage2: "/assets/alpha-6.jpg",
     stepImage3: [
       "/assets/alpha-step-3.jpg",
