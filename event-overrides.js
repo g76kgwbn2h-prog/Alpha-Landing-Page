@@ -12,6 +12,27 @@
     return escapeHtml(value).replace(/\n/g, '<br class="wixui-rich-text__text">');
   }
 
+  function ensureHeaderFlashGuard() {
+    var guard = document.getElementById("sp-header-flash-guard");
+    if (guard || !document.head) {
+      return;
+    }
+    guard = document.createElement("style");
+    guard.id = "sp-header-flash-guard";
+    guard.textContent = "#comp-m7x93b2112{visibility:hidden!important;}";
+    document.head.appendChild(guard);
+  }
+
+  function releaseHeaderFlashGuard() {
+    var guard = document.getElementById("sp-header-flash-guard");
+    if (guard && guard.parentNode) {
+      guard.parentNode.removeChild(guard);
+    }
+  }
+
+  ensureHeaderFlashGuard();
+  setTimeout(releaseHeaderFlashGuard, 4000);
+
   function setHtml(id, html) {
     var el = document.getElementById(id);
     if (el) {
@@ -256,11 +277,11 @@
       ".sp-brand{display:flex;align-items:center;gap:12px;color:var(--sp-text)!important;text-decoration:none!important;font:600 14px/1.2 Arial,sans-serif;letter-spacing:.03em;text-transform:uppercase;}",
       ".sp-brand img{height:38px;width:auto;display:block;filter:brightness(1.05);}",
       ".sp-brand span{display:inline;}",
-      ".sp-alpha-brand{display:none;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;border:1px solid var(--sp-border);background:rgba(255,255,255,.05);color:var(--sp-text)!important;text-decoration:none!important;font:700 11px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}",
+      ".sp-alpha-brand{display:none;align-items:center;gap:0;padding:6px 10px;border-radius:999px;border:1px solid var(--sp-border);background:rgba(255,255,255,.05);color:var(--sp-text)!important;text-decoration:none!important;font:600 14px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}",
       ".sp-alpha-brand--desktop{display:inline-flex;}",
       ".sp-alpha-brand-logo{height:18px;width:18px;object-fit:contain;display:block;}",
       ".sp-alpha-brand-plus{display:inline-flex;align-items:center;justify-content:center;height:18px;width:18px;border-radius:999px;background:var(--sp-accent);color:#120c08;font:800 13px/1 Arial,sans-serif;}",
-      ".sp-alpha-brand-text{display:inline-block;}",
+      ".sp-alpha-brand-text{display:inline-block;font:inherit;letter-spacing:inherit;}",
       ".sp-nav{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-end;}",
       ".sp-header-sponsor{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--sp-border);border-radius:999px;background:rgba(255,255,255,.03);color:var(--sp-text)!important;text-decoration:none!important;font:600 11px/1 Arial,sans-serif;letter-spacing:.04em;white-space:nowrap;}",
       ".sp-header-sponsor img{height:16px;width:16px;object-fit:contain;border-radius:3px;}",
@@ -307,7 +328,7 @@
       "#comp-m7xb380k a,#comp-m7xce3ra a{background:var(--sp-accent)!important;border-color:var(--sp-accent)!important;color:#1a110a!important;}",
       "#comp-m7xb380k a:hover,#comp-m7xce3ra a:hover{background:var(--sp-accent-hover)!important;border-color:var(--sp-accent-hover)!important;}",
       "#comp-mclebto0{display:none!important;}",
-      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:space-between}.sp-header-left{gap:8px}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-alpha-brand{display:inline-flex;padding:5px 8px}.sp-alpha-brand-logo,.sp-alpha-brand-plus{height:16px;width:16px}.sp-alpha-brand-text{font-size:10px;letter-spacing:.1em}.sp-nav{display:none!important}.sp-header-sponsor{display:none}.sp-burger{display:inline-flex}.sp-mobile-menu{display:block}.sp-mobile-backdrop{display:block;opacity:0;pointer-events:none;transition:opacity .2s}.sp-header.is-open .sp-mobile-backdrop{opacity:1;pointer-events:auto}.sp-header:not(.is-open) .sp-mobile-menu{display:none}.sp-header.is-open .sp-mobile-menu{display:block}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}.sp-bottom-content{flex-direction:column;align-items:flex-start}.sp-sponsor{justify-content:flex-start}}",
+      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:space-between}.sp-header-left{gap:8px}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-alpha-brand{display:inline-flex;padding:5px 8px;font:600 14px/1.2 Arial,sans-serif}.sp-alpha-brand-logo{height:16px;width:16px}.sp-alpha-brand-text{font-size:inherit;letter-spacing:inherit}.sp-nav{display:none!important}.sp-header-sponsor{display:none}.sp-burger{display:inline-flex}.sp-mobile-menu{display:block}.sp-mobile-backdrop{display:block;opacity:0;pointer-events:none;transition:opacity .2s}.sp-header.is-open .sp-mobile-backdrop{opacity:1;pointer-events:auto}.sp-header:not(.is-open) .sp-mobile-menu{display:none}.sp-header.is-open .sp-mobile-menu{display:block}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}.sp-bottom-content{flex-direction:column;align-items:flex-start}.sp-sponsor{justify-content:flex-start}}",
     ].join("");
 
     var style = document.getElementById("sp-theme-style");
@@ -401,14 +422,17 @@
         '" alt="' +
         escapeHtml(label) +
         ' logo" onerror="this.style.display=\'none\'">'
-      : '<span class="sp-alpha-brand-plus" aria-hidden="true">+</span>';
+      : "";
     var desktopClass = alphaHeader.showDesktop ? " sp-alpha-brand--desktop" : "";
 
     return (
       '<a class="sp-alpha-brand' +
       desktopClass +
       '" href="' +
-      escapeHtml(alphaHeader.url || "https://alpha.org") +
+      escapeHtml(
+        alphaHeader.url ||
+          "https://www.alpha.org.au/try?gad_source=1&gad_campaignid=11286923519&gbraid=0AAAAADO2eb4PQ58JDtqLJgWcHBNQMDKn9&gclid=EAIaIQobChMIjon85b_pkgMVJqhmAh22cAVjEAAYASABEgIDFvD_BwE"
+      ) +
       '" target="_blank" rel="noopener noreferrer" aria-label="' +
       escapeHtml(label) +
       '">' +
@@ -442,7 +466,7 @@
         "</span></a>";
     }
     if (header) {
-      header.innerHTML =
+      var headerMarkup =
         '<div class="sp-header"><div class="sp-header-inner">' +
         '<div class="sp-header-left">' +
         '<a class="sp-brand" href="' +
@@ -469,6 +493,14 @@
         '<nav class="sp-mobile-menu" aria-label="Mobile menu">' +
         renderLinks(headerLinks, "sp-mobile-link") +
         "</nav></div>";
+
+      if (!header.querySelector(".sp-header")) {
+        header.innerHTML = headerMarkup;
+      }
+
+      if (header.querySelector(".sp-header")) {
+        releaseHeaderFlashGuard();
+      }
     }
 
     var footer = document.getElementById("comp-m7x93b201");
@@ -494,7 +526,7 @@
           "</span></a></div>";
       }
 
-      footer.innerHTML =
+      var footerMarkup =
         '<footer class="sp-footer"><div class="sp-footer-inner">' +
         "<div>" +
         "<h4>St Philip's Anglican Cottesloe</h4>" +
@@ -523,6 +555,10 @@
         ". All rights reserved.</span>" +
         sponsorMarkup +
         "</div></div></footer>";
+
+      if (!footer.querySelector(".sp-footer")) {
+        footer.innerHTML = footerMarkup;
+      }
     }
   }
 

@@ -78,7 +78,7 @@ window.EVENT_CONFIG = {
   alphaHeader: {
     enabled: true,
     label: "ALPHA",
-    url: "https://alpha.org",
+    url: "https://www.alpha.org.au/try?gad_source=1&gad_campaignid=11286923519&gbraid=0AAAAADO2eb4PQ58JDtqLJgWcHBNQMDKn9&gclid=EAIaIQobChMIjon85b_pkgMVJqhmAh22cAVjEAAYASABEgIDFvD_BwE",
     logoUrl: "",
     showDesktop: false,
   },
