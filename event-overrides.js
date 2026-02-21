@@ -146,6 +146,18 @@
   }
 
   function getImageCandidates(src) {
+    if (Array.isArray(src)) {
+      var list = [];
+      src.forEach(function (item) {
+        getImageCandidates(item).forEach(function (candidate) {
+          if (list.indexOf(candidate) === -1) {
+            list.push(candidate);
+          }
+        });
+      });
+      return list;
+    }
+
     var value = String(src || "").trim();
     if (!value) {
       return [];
@@ -169,13 +181,25 @@
     }
 
     var image = document.querySelector(selector + " img");
+    var source = document.querySelector(selector + " source");
+
+    function setCandidate(index) {
+      if (!image || !candidates[index]) {
+        return;
+      }
+      image.src = candidates[index];
+      if (source) {
+        source.srcset = candidates[index];
+      }
+    }
+
     if (image) {
       var index = 0;
-      image.src = candidates[index];
+      setCandidate(index);
       image.onerror = function () {
         index += 1;
         if (index < candidates.length) {
-          image.src = candidates[index];
+          setCandidate(index);
           return;
         }
         image.onerror = null;
@@ -183,11 +207,6 @@
       if (alt) {
         image.alt = alt;
       }
-    }
-
-    var source = document.querySelector(selector + " source");
-    if (source) {
-      source.srcset = candidates[0];
     }
   }
 
