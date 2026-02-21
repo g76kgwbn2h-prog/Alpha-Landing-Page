@@ -251,10 +251,16 @@
       "}",
       ".sp-header{position:sticky;top:0;z-index:9999;background:rgba(22,19,17,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--sp-border);}",
       ".sp-header-inner{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px;}",
+      ".sp-header-left{display:flex;align-items:center;gap:12px;min-width:0;}",
       ".sp-header-right{display:flex;align-items:center;gap:10px;}",
       ".sp-brand{display:flex;align-items:center;gap:12px;color:var(--sp-text)!important;text-decoration:none!important;font:600 14px/1.2 Arial,sans-serif;letter-spacing:.03em;text-transform:uppercase;}",
       ".sp-brand img{height:38px;width:auto;display:block;filter:brightness(1.05);}",
       ".sp-brand span{display:inline;}",
+      ".sp-alpha-brand{display:none;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;border:1px solid var(--sp-border);background:rgba(255,255,255,.05);color:var(--sp-text)!important;text-decoration:none!important;font:700 11px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}",
+      ".sp-alpha-brand--desktop{display:inline-flex;}",
+      ".sp-alpha-brand-logo{height:18px;width:18px;object-fit:contain;display:block;}",
+      ".sp-alpha-brand-plus{display:inline-flex;align-items:center;justify-content:center;height:18px;width:18px;border-radius:999px;background:var(--sp-accent);color:#120c08;font:800 13px/1 Arial,sans-serif;}",
+      ".sp-alpha-brand-text{display:inline-block;}",
       ".sp-nav{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-end;}",
       ".sp-header-sponsor{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--sp-border);border-radius:999px;background:rgba(255,255,255,.03);color:var(--sp-text)!important;text-decoration:none!important;font:600 11px/1 Arial,sans-serif;letter-spacing:.04em;white-space:nowrap;}",
       ".sp-header-sponsor img{height:16px;width:16px;object-fit:contain;border-radius:3px;}",
@@ -301,7 +307,7 @@
       "#comp-m7xb380k a,#comp-m7xce3ra a{background:var(--sp-accent)!important;border-color:var(--sp-accent)!important;color:#1a110a!important;}",
       "#comp-m7xb380k a:hover,#comp-m7xce3ra a:hover{background:var(--sp-accent-hover)!important;border-color:var(--sp-accent-hover)!important;}",
       "#comp-mclebto0{display:none!important;}",
-      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:space-between}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-nav{display:none!important}.sp-header-sponsor{display:none}.sp-burger{display:inline-flex}.sp-mobile-menu{display:block}.sp-mobile-backdrop{display:block;opacity:0;pointer-events:none;transition:opacity .2s}.sp-header.is-open .sp-mobile-backdrop{opacity:1;pointer-events:auto}.sp-header:not(.is-open) .sp-mobile-menu{display:none}.sp-header.is-open .sp-mobile-menu{display:block}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}.sp-bottom-content{flex-direction:column;align-items:flex-start}.sp-sponsor{justify-content:flex-start}}",
+      "@media (max-width:860px){.sp-footer-inner{grid-template-columns:1fr}.sp-header-inner{padding:10px 14px;justify-content:space-between}.sp-header-left{gap:8px}.sp-brand img{height:30px}.sp-brand span{display:none}.sp-alpha-brand{display:inline-flex;padding:5px 8px}.sp-alpha-brand-logo,.sp-alpha-brand-plus{height:16px;width:16px}.sp-alpha-brand-text{font-size:10px;letter-spacing:.1em}.sp-nav{display:none!important}.sp-header-sponsor{display:none}.sp-burger{display:inline-flex}.sp-mobile-menu{display:block}.sp-mobile-backdrop{display:block;opacity:0;pointer-events:none;transition:opacity .2s}.sp-header.is-open .sp-mobile-backdrop{opacity:1;pointer-events:auto}.sp-header:not(.is-open) .sp-mobile-menu{display:none}.sp-header.is-open .sp-mobile-menu{display:block}.sp-nav-link{font-size:11px}.sp-try-inner{grid-template-columns:1fr;gap:18px}.sp-try-section{padding:34px 16px 40px}.sp-try-intro{font-size:18px}.sp-try-overlay{font-size:clamp(22px,9vw,40px)}.sp-bottom-content{flex-direction:column;align-items:flex-start}.sp-sponsor{justify-content:flex-start}}",
     ].join("");
 
     var style = document.getElementById("sp-theme-style");
@@ -378,11 +384,47 @@
     anchor.parentNode.insertBefore(section, anchor);
   }
 
+  function getAlphaHeaderMarkup(config) {
+    var alphaHeader = config.alphaHeader || {};
+    if (alphaHeader.enabled === false) {
+      return "";
+    }
+
+    var label = String(alphaHeader.label || config.heroTag || "ALPHA").trim();
+    if (!label) {
+      return "";
+    }
+
+    var logoMarkup = alphaHeader.logoUrl
+      ? '<img class="sp-alpha-brand-logo" src="' +
+        escapeHtml(alphaHeader.logoUrl) +
+        '" alt="' +
+        escapeHtml(label) +
+        ' logo" onerror="this.style.display=\'none\'">'
+      : '<span class="sp-alpha-brand-plus" aria-hidden="true">+</span>';
+    var desktopClass = alphaHeader.showDesktop ? " sp-alpha-brand--desktop" : "";
+
+    return (
+      '<a class="sp-alpha-brand' +
+      desktopClass +
+      '" href="' +
+      escapeHtml(alphaHeader.url || "https://alpha.org") +
+      '" target="_blank" rel="noopener noreferrer" aria-label="' +
+      escapeHtml(label) +
+      '">' +
+      logoMarkup +
+      '<span class="sp-alpha-brand-text">' +
+      escapeHtml(label) +
+      "</span></a>"
+    );
+  }
+
   function replaceHeaderFooter(config) {
     var header = document.getElementById("comp-m7x93b2112");
     var headerLinks = (config.headerNav || []).filter(function (link) {
       return String(link.label || "").trim().toUpperCase() !== "ALPHA";
     });
+    var alphaHeaderMarkup = getAlphaHeaderMarkup(config);
     var headerSponsorMarkup = "";
     if (config.sponsor && config.sponsor.url) {
       var headerSponsorIcon = config.sponsor.logoUrl
@@ -402,6 +444,7 @@
     if (header) {
       header.innerHTML =
         '<div class="sp-header"><div class="sp-header-inner">' +
+        '<div class="sp-header-left">' +
         '<a class="sp-brand" href="' +
         escapeHtml(config.churchWebsite) +
         '" target="_blank" rel="noopener noreferrer">' +
@@ -413,6 +456,8 @@
         "<span>" +
         escapeHtml(config.churchName) +
         "</span></a>" +
+        alphaHeaderMarkup +
+        "</div>" +
         '<div class="sp-header-right">' +
         '<button class="sp-burger" type="button" aria-label="Open menu" aria-expanded="false">&#9776;</button>' +
         '<nav class="sp-nav">' +

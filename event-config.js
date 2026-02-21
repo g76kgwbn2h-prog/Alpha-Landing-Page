@@ -28,9 +28,9 @@ window.EVENT_CONFIG = {
         "Grab a drink, join your group of new friends, and spend some quality time catching up over some quality (free) food.",
     },
     {
-      title: "A LIVE TALK",
+      title: "ALPHA FILM SERIES",
       description:
-        "Each week, there's a 25-minute talk, from an everyday person, designed to spark conversation around the big questions of life, Jesus, and faith.",
+        "Cinematic, engaging and thought-provoking — the Alpha Film Series features 25-minute episodes exploring life, faith and meaning through powerful stories and honest conversations.",
     },
     {
       title: "GOOD CONVERSATION",
@@ -75,6 +75,13 @@ window.EVENT_CONFIG = {
     { label: "GIVE", url: "https://stphilips.net.au/giving" },
     { label: "CONTACT", url: "https://stphilips.net.au/get-in-touch" },
   ],
+  alphaHeader: {
+    enabled: true,
+    label: "ALPHA",
+    url: "https://alpha.org",
+    logoUrl: "",
+    showDesktop: false,
+  },
   footerLinks: [
     { label: "Sunday", url: "https://stphilips.net.au/sunday" },
     { label: "Kids", url: "https://stphilips.net.au/kids-1" },
@@ -115,9 +122,9 @@ window.EVENT_CONFIG = {
     introImage1: "/assets/alpha-9.jpg",
     introImage2: "/assets/alpha-8.jpg",
     introImage3: "/assets/alpha-4.jpg",
-    stepImage1: "/assets/alpha-2.jpg",
+    stepImage1: "/assets/new-1.png",
     stepImage2: "/assets/alpha-6.jpg",
-    stepImage3: "/assets/alpha-7.jpg",
+    stepImage3: "/assets/new-2.png",
     stepImage4: "/assets/alpha-5.jpg",
     bottomBanner: "/assets/alpha-3.jpg",
   },
