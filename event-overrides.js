@@ -174,40 +174,116 @@
     return ["./" + value, "/" + value.replace(/^\/+/, "")];
   }
 
+  function normaliseUrl(value) {
+    if (!value) {
+      return "";
+    }
+    try {
+      return new URL(value, window.location.href).href;
+    } catch (error) {
+      return String(value);
+    }
+  }
+
+  function sameImageUrl(current, next) {
+    return normaliseUrl(current) === normaliseUrl(next);
+  }
+
+  function applyImageCandidate(imageRoot, state) {
+    if (!imageRoot || !state || !state.candidates || !state.candidates.length) {
+      return;
+    }
+
+    if (state.index < 0 || state.index >= state.candidates.length) {
+      state.index = 0;
+    }
+
+    var candidate = state.candidates[state.index];
+    var image = imageRoot.querySelector("img");
+    var source = imageRoot.querySelector("source");
+
+    if (!image || !candidate) {
+      return;
+    }
+
+    if (!sameImageUrl(image.getAttribute("src") || image.src, candidate)) {
+      image.src = candidate;
+    }
+    if (source && !sameImageUrl(source.getAttribute("srcset"), candidate)) {
+      source.srcset = candidate;
+    }
+    if (image.hasAttribute("srcset")) {
+      image.removeAttribute("srcset");
+    }
+    if (state.alt && image.alt !== state.alt) {
+      image.alt = state.alt;
+    }
+  }
+
+  function bindImageErrorFallback(imageRoot, state) {
+    var image = imageRoot && imageRoot.querySelector("img");
+    if (!image || image.getAttribute("data-sp-image-error-bound") === "1") {
+      return;
+    }
+
+    image.setAttribute("data-sp-image-error-bound", "1");
+    image.addEventListener("error", function () {
+      state.index += 1;
+      if (state.index < state.candidates.length) {
+        applyImageCandidate(imageRoot, state);
+      }
+    });
+  }
+
   function updateImageSlot(selector, src, alt) {
     var candidates = getImageCandidates(src);
     if (!candidates.length) {
       return;
     }
 
-    var image = document.querySelector(selector + " img");
-    var source = document.querySelector(selector + " source");
-
-    function setCandidate(index) {
-      if (!image || !candidates[index]) {
-        return;
-      }
-      image.src = candidates[index];
-      if (source) {
-        source.srcset = candidates[index];
-      }
+    var imageRoot = document.querySelector(selector);
+    if (!imageRoot) {
+      return;
     }
 
-    if (image) {
-      var index = 0;
-      setCandidate(index);
-      image.onerror = function () {
-        index += 1;
-        if (index < candidates.length) {
-          setCandidate(index);
-          return;
-        }
-        image.onerror = null;
+    var state = imageRoot.__spImageSyncState;
+    if (!state) {
+      state = {
+        candidates: candidates.slice(),
+        alt: alt || "",
+        index: 0,
       };
-      if (alt) {
-        image.alt = alt;
+      imageRoot.__spImageSyncState = state;
+    } else {
+      state.candidates = candidates.slice();
+      state.alt = alt || state.alt;
+      if (state.index >= state.candidates.length) {
+        state.index = 0;
       }
     }
+
+    function sync() {
+      applyImageCandidate(imageRoot, state);
+      bindImageErrorFallback(imageRoot, state);
+    }
+
+    sync();
+
+    if (imageRoot.getAttribute("data-sp-image-observer-bound") !== "1") {
+      imageRoot.setAttribute("data-sp-image-observer-bound", "1");
+      var observer = new MutationObserver(function () {
+        sync();
+      });
+      observer.observe(imageRoot, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    setTimeout(sync, 150);
+    setTimeout(sync, 900);
+    setTimeout(sync, 1800);
   }
 
   function updateImages(config) {
@@ -776,5 +852,17 @@
 
   window.addEventListener("load", function () {
     setTimeout(applyEventConfig, 50);
+  });
+
+  var resizeTimer = null;
+  window.addEventListener("resize", function () {
+    if (resizeTimer) {
+      clearTimeout(resizeTimer);
+    }
+    resizeTimer = setTimeout(applyEventConfig, 180);
+  });
+
+  window.addEventListener("orientationchange", function () {
+    setTimeout(applyEventConfig, 220);
   });
 })();
